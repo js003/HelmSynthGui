@@ -39,6 +39,8 @@
 #include "voice_section.h"
 #include "volume_section.h"
 
+#include "colorblock_section.h"
+
 #include "modulation_button.h"
 
 class SynthesisInterface  : public SynthSection {
@@ -59,7 +61,7 @@ class SynthesisInterface  : public SynthSection {
   private:
     ScopedPointer<EnvelopeSection> amplitude_envelope_section_;
     ScopedPointer<DelaySection> delay_section_;
-    ScopedPointer<DynamicSection> dynamic_section_;
+    //ScopedPointer<DynamicSection> dynamic_section_;
     ScopedPointer<EnvelopeSection> extra_envelope_section_;
     //ScopedPointer<ExtraModSection> extra_mod_section_;
     //ScopedPointer<FeedbackSection> feedback_section_;
@@ -77,7 +79,9 @@ class SynthesisInterface  : public SynthSection {
     //ScopedPointer<StepSequencerSection> step_sequencer_section_;
     //ScopedPointer<StutterSection> stutter_section_;
     //ScopedPointer<SubSection> sub_section_;
-    ScopedPointer<VoiceSection> voice_section_;
+    //ScopedPointer<VoiceSection> voice_section_;
+
+    ScopedPointer<ColorBlockSection> colorblock_section_;
 
     int padding_;
     int section_one_width_;

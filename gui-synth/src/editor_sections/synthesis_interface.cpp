@@ -30,7 +30,7 @@ SynthesisInterface::SynthesisInterface(
     mopo::control_map controls, MidiKeyboardState* keyboard_state) : SynthSection("synthesis") {
   addSubSection(amplitude_envelope_section_ = new EnvelopeSection("AMPLITUDE ENVELOPE", "amp"));
   //addSubSection(delay_section_ = new DelaySection("DELAY"));
-  addSubSection(dynamic_section_ = new DynamicSection("DYNAMICS"));
+  //addSubSection(dynamic_section_ = new DynamicSection("DYNAMICS"));
   addSubSection(extra_envelope_section_ = new EnvelopeSection("MOD ENVELOPE", "mod"));
   //addSubSection(extra_mod_section_ = new ExtraModSection("KEYBOARD MOD"));
   //addSubSection(feedback_section_ = new FeedbackSection("FEEDBACK"));
@@ -52,7 +52,9 @@ SynthesisInterface::SynthesisInterface(
   //addSubSection(step_sequencer_section_ = new StepSequencerSection("STEP SEQUENCER"));
   //addSubSection(stutter_section_ = new StutterSection("STUTTER"));
   //addSubSection(sub_section_ = new SubSection("SUB"));
-  addSubSection(voice_section_ = new VoiceSection("VOICE"));
+  //addSubSection(voice_section_ = new VoiceSection("VOICE"));
+
+  addSubSection(colorblock_section_ = new ColorBlockSection("RIGHTBLOCK"));
 
   //keyboard_->setColour(MidiKeyboardComponent::whiteNoteColourId, Colour(0xff444444));
   //keyboard_->setColour(MidiKeyboardComponent::blackNoteColourId, Colour(0xff222222));
@@ -71,7 +73,7 @@ SynthesisInterface::~SynthesisInterface() {
   amplitude_envelope_section_ = nullptr;
   //delay_section_ = nullptr;
   //distortion_section_ = nullptr;
-  dynamic_section_ = nullptr;
+  //dynamic_section_ = nullptr;
   extra_envelope_section_ = nullptr;
   //extra_mod_section_ = nullptr;
   //feedback_section_ = nullptr;
@@ -88,7 +90,7 @@ SynthesisInterface::~SynthesisInterface() {
   //step_sequencer_section_ = nullptr;
   //stutter_section_ = nullptr;
   //sub_section_ = nullptr;
-  voice_section_ = nullptr;
+  //voice_section_ = nullptr;
 }
 
 void SynthesisInterface::paintBackground(Graphics& g) {
@@ -98,7 +100,7 @@ void SynthesisInterface::paintBackground(Graphics& g) {
   section_shadow.drawForRectangle(g, amplitude_envelope_section_->getBounds());
   //section_shadow.drawForRectangle(g, delay_section_->getBounds());
   /*section_shadow.drawForRectangle(g, distortion_section_->getBounds());*/
-  section_shadow.drawForRectangle(g, dynamic_section_->getBounds());
+  //section_shadow.drawForRectangle(g, dynamic_section_->getBounds());
   section_shadow.drawForRectangle(g, extra_envelope_section_->getBounds());
   //section_shadow.drawForRectangle(g, extra_mod_section_->getBounds());
   //section_shadow.drawForRectangle(g, feedback_section_->getBounds());
@@ -115,7 +117,9 @@ void SynthesisInterface::paintBackground(Graphics& g) {
   //section_shadow.drawForRectangle(g, //step_sequencer_section_->getBounds());
   //section_shadow.drawForRectangle(g, stutter_section_->getBounds());
   //section_shadow.drawForRectangle(g, sub_section_->getBounds());
-  section_shadow.drawForRectangle(g, voice_section_->getBounds());
+  //section_shadow.drawForRectangle(g, voice_section_->getBounds());
+
+  section_shadow.drawForRectangle(g, colorblock_section_->getBounds());
 
   paintChildrenBackgrounds(g);
 }
@@ -149,9 +153,9 @@ void SynthesisInterface::resized() {
   oscillator_section_->setBounds(column_1_x, padding_, section_one_width_, oscillators_height);
   /*sub_section_->setBounds(column_1_x, oscillator_section_->getBottom() + padding_,
                           sub_width, sub_mixer_height);*/
-  mixer_section_->setBounds(/*sub_section_->getRight() +*/ padding_, /*sub_section_->getY()*/ oscillator_section_->getBottom() + padding_,
+  mixer_section_->setBounds(column_4_x, /*sub_section_->getY()*/ padding_,
                             mixer_width, sub_mixer_height);
-  amplitude_envelope_section_->setBounds(column_1_x, mixer_section_->getBottom() + padding_,
+  amplitude_envelope_section_->setBounds(column_1_x, oscillator_section_->getBottom() + padding_,
                                          section_one_width_, envelopes_height);
 
   /*feedback_section_->setBounds(column_2_x, padding_, section_two_width_, feedback_height);*/
@@ -192,15 +196,18 @@ void SynthesisInterface::resized() {
   int dynamic_width = size_ratio_ * DYNAMIC_WIDTH;
   int dynamics_y = getHeight() - padding_ - dynamics_height;
 
-  voice_section_->setBounds(column_1_x, dynamics_y,
-                            dynamic_width, dynamics_height);
-  dynamic_section_->setBounds(extra_envelope_section_->getRight() - dynamic_width, dynamics_y,
-                              dynamic_width, dynamics_height);
+  /*voice_section_->setBounds(column_1_x, dynamics_y,
+                            dynamic_width, dynamics_height);*/
+  /*dynamic_section_->setBounds(extra_envelope_section_->getRight() - dynamic_width, dynamics_y,
+                              dynamic_width, dynamics_height);*/
   /*keyboard_->setBounds(voice_section_->getRight() + padding_,
                        voice_section_->getY() + keyboard_padding,
                        dynamic_section_->getX() - voice_section_->getRight() - 2 * padding_,
                        dynamics_height - 2 * keyboard_padding);*/
   //keyboard_->setKeyWidth(size_ratio_ * 16.0f);
+
+  colorblock_section_->setBounds(column_3_x, extra_envelope_section_->getBottom() + padding_,
+                                 section_three_width_, envelopes_height);
 
   SynthSection::resized();
 }

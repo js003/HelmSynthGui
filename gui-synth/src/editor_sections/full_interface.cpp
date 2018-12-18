@@ -27,7 +27,7 @@ FullInterface::FullInterface(mopo::control_map controls, mopo::output_map modula
   open_gl_context.setOpenGLVersionRequired(OpenGLContext::openGL3_2);
 
   addSubSection(synthesis_interface_ = new SynthesisInterface(controls, keyboard_state));
-  addSubSection(arp_section_ = new ArpSection(TRANS("ARP")));
+//  addSubSection(arp_section_ = new ArpSection(TRANS("ARP")));
   addSubSection(bpm_section_ = new BpmSection(TRANS("BPM")));
 
   addSubSection(patch_selector_ = new PatchSelector());
@@ -100,7 +100,7 @@ FullInterface::~FullInterface() {
   about_section_ = nullptr;
   contribute_section_ = nullptr;
   update_check_section_ = nullptr;
-  arp_section_ = nullptr;
+  //arp_section_ = nullptr;
   oscilloscope_ = nullptr;
   synthesis_interface_ = nullptr;
   bpm_section_ = nullptr;
@@ -122,7 +122,7 @@ void FullInterface::paintBackground(Graphics& g) {
   g.setColour(Colors::background);
   g.fillRect(getLocalBounds());
 
-  shadow.drawForRectangle(g, arp_section_->getBounds());
+  //shadow.drawForRectangle(g, arp_section_->getBounds());
   shadow.drawForRectangle(g, oscilloscope_->getBounds());
   shadow.drawForRectangle(g, patch_selector_->getBounds());
 
@@ -211,8 +211,8 @@ void FullInterface::resized() {
   bpm_section_->setBounds(oscilloscope_->getRight() + padding, padding,
                           bpm_width, top_height);
 
-  arp_section_->setBounds(bpm_section_->getRight() + padding, padding,
-                          arp_width, top_height);
+  /*arp_section_->setBounds(bpm_section_->getRight() + padding, padding,
+                          arp_width, top_height);*/
 
   synthesis_interface_->setBounds(left, top_height + padding,
                                   width, height - top_height - padding);
@@ -225,7 +225,7 @@ void FullInterface::resized() {
   delete_section_->setBounds(getBounds());
 
   patch_browser_->setBounds(synthesis_interface_->getX() + padding, synthesis_interface_->getY(),
-                            arp_section_->getRight() - synthesis_interface_->getX() - padding,
+                            width, //arp_section_->getRight() - synthesis_interface_->getX() - padding,
                             synthesis_interface_->getHeight() - padding);
 
   SynthSection::resized();

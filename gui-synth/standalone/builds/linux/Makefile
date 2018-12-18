@@ -32,7 +32,7 @@ ifeq ($(CONFIG),Debug)
   JUCE_OUTDIR := build
 
   ifeq ($(TARGET_ARCH),)
-    TARGET_ARCH := 
+    TARGET_ARCH :=
   endif
 
   JUCE_CPPFLAGS := $(DEPFLAGS) -DLINUX=1 -DDEBUG=1 -D_DEBUG=1 -DJUCE_JACK_CLIENT_NAME=\"Helm\" -DJUCE_ALSA_MIDI_INPUT_NAME=\"Helm\" -DJUCE_ALSA_MIDI_OUTPUT_NAME=\"Helm\" -DJUCE_USE_XRANDR=0 -DJUCER_LINUX_MAKE_6B3E762A=1 -DJUCE_APP_VERSION=0.9.0 -DJUCE_APP_VERSION_HEX=0x900 $(shell pkg-config --cflags alsa freetype2 libcurl x11 xext xinerama) -pthread -I../../JuceLibraryCode -I../../../JUCE/modules -I../../../concurrentqueue -I../../../mopo/src -I../../../src -I../../../src/common -I../../../src/editor_components -I../../../src/editor_sections -I../../../src/look_and_feel -I../../../src/standalone -I../../../src/synthesis $(CPPFLAGS)
@@ -53,7 +53,7 @@ ifeq ($(CONFIG),Release)
   JUCE_OUTDIR := build
 
   ifeq ($(TARGET_ARCH),)
-    TARGET_ARCH := 
+    TARGET_ARCH :=
   endif
 
   JUCE_CPPFLAGS := $(DEPFLAGS) -DLINUX=1 -DNDEBUG=1 -DJUCE_JACK_CLIENT_NAME=\"Helm\" -DJUCE_ALSA_MIDI_INPUT_NAME=\"Helm\" -DJUCE_ALSA_MIDI_OUTPUT_NAME=\"Helm\" -DJUCE_USE_XRANDR=0 -DJUCER_LINUX_MAKE_6B3E762A=1 -DJUCE_APP_VERSION=0.9.0 -DJUCE_APP_VERSION_HEX=0x900 $(shell pkg-config --cflags alsa freetype2 libcurl x11 xext xinerama) -pthread -I../../JuceLibraryCode -I../../../JUCE/modules -I../../../concurrentqueue -I../../../mopo/src -I../../../src -I../../../src/common -I../../../src/editor_components -I../../../src/editor_sections -I../../../src/look_and_feel -I../../../src/standalone -I../../../src/synthesis $(CPPFLAGS)
@@ -169,6 +169,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/update_check_section_c57e00f6.o \
   $(JUCE_OBJDIR)/voice_section_99705324.o \
   $(JUCE_OBJDIR)/volume_section_9cff0be.o \
+  $(JUCE_OBJDIR)/colorblock_section_adff0be.o \
   $(JUCE_OBJDIR)/browser_look_and_feel_d6654391.o \
   $(JUCE_OBJDIR)/colors_9855f240.o \
   $(JUCE_OBJDIR)/default_look_and_feel_f168ba6a.o \
@@ -722,6 +723,11 @@ $(JUCE_OBJDIR)/voice_section_99705324.o: ../../../src/editor_sections/voice_sect
 $(JUCE_OBJDIR)/volume_section_9cff0be.o: ../../../src/editor_sections/volume_section.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling volume_section.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/colorblock_section_adff0be.o: ../../../src/editor_sections/colorblock_section.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling colorblock_section.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/browser_look_and_feel_d6654391.o: ../../../src/look_and_feel/browser_look_and_feel.cpp
