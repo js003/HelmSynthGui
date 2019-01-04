@@ -78,10 +78,11 @@ class SynthesisInterface  : public SynthSection {
     //ScopedPointer<DistortionSection> distortion_section_;
     //ScopedPointer<StepSequencerSection> step_sequencer_section_;
     //ScopedPointer<StutterSection> stutter_section_;
-    //ScopedPointer<SubSection> sub_section_;
+    ScopedPointer<SubSection> sub_section_;
     //ScopedPointer<VoiceSection> voice_section_;
 
-    ScopedPointer<ColorBlockSection> colorblock_section_;
+    ScopedPointer<ColorBlockSection> colorblock_left_section_;
+    ScopedPointer<ColorBlockSection> colorblock_right_section_;
 
     int padding_;
     int section_one_width_;

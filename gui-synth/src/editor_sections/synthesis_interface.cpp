@@ -51,10 +51,11 @@ SynthesisInterface::SynthesisInterface(
   //addSubSection(distortion_section_ = new DistortionSection("DISTORTION"));
   //addSubSection(step_sequencer_section_ = new StepSequencerSection("STEP SEQUENCER"));
   //addSubSection(stutter_section_ = new StutterSection("STUTTER"));
-  //addSubSection(sub_section_ = new SubSection("SUB"));
+  addSubSection(sub_section_ = new SubSection("SUB"));
   //addSubSection(voice_section_ = new VoiceSection("VOICE"));
 
-  addSubSection(colorblock_section_ = new ColorBlockSection("RIGHTBLOCK"));
+  addSubSection(colorblock_left_section_ = new ColorBlockSection(""));
+  addSubSection(colorblock_right_section_ = new ColorBlockSection(""));
 
   //keyboard_->setColour(MidiKeyboardComponent::whiteNoteColourId, Colour(0xff444444));
   //keyboard_->setColour(MidiKeyboardComponent::blackNoteColourId, Colour(0xff222222));
@@ -89,7 +90,7 @@ SynthesisInterface::~SynthesisInterface() {
   //reverb_section_ = nullptr;
   //step_sequencer_section_ = nullptr;
   //stutter_section_ = nullptr;
-  //sub_section_ = nullptr;
+  sub_section_ = nullptr;
   //voice_section_ = nullptr;
 }
 
@@ -116,10 +117,11 @@ void SynthesisInterface::paintBackground(Graphics& g) {
   //section_shadow.drawForRectangle(g, reverb_section_->getBounds());
   //section_shadow.drawForRectangle(g, //step_sequencer_section_->getBounds());
   //section_shadow.drawForRectangle(g, stutter_section_->getBounds());
-  //section_shadow.drawForRectangle(g, sub_section_->getBounds());
+  section_shadow.drawForRectangle(g, sub_section_->getBounds());
   //section_shadow.drawForRectangle(g, voice_section_->getBounds());
 
-  section_shadow.drawForRectangle(g, colorblock_section_->getBounds());
+  section_shadow.drawForRectangle(g, colorblock_left_section_->getBounds());
+  section_shadow.drawForRectangle(g, colorblock_right_section_->getBounds());
 
   paintChildrenBackgrounds(g);
 }
@@ -136,53 +138,51 @@ void SynthesisInterface::resized() {
   int mixer_width = section_one_width_ - padding_ - sub_width;
 
   int audio_height = size_ratio_ * 290.0f;
-  int oscillators_height = size_ratio_ * 180.0f;
-  int sub_mixer_height = audio_height - oscillators_height - padding_;
   int filter_height = size_ratio_ * 196.0f;
-  int feedback_height = audio_height - filter_height - padding_;
+  int oscillators_height = filter_height;//size_ratio_ * 180.0f;
   int envelopes_height = size_ratio_ * 120.0f;
-  int step_lfo_height = size_ratio_ * 148.0f;
+  int step_lfo_height = size_ratio_ * 120.0f;//148.0f;
+  int sub_mixer_height = step_lfo_height;//audio_height - oscillators_height - padding_;
+  int feedback_height = audio_height - filter_height - padding_;
   int dynamics_height = size_ratio_ * 64.0f;
   int keyboard_padding = size_ratio_ * 5.0f;
   int stutter_height = size_ratio_ * 141.0f;
-  int formant_height = audio_height - stutter_height - padding_;
+  int formant_height = filter_height;//audio_height - stutter_height - padding_;
   int delay_height = size_ratio_ * 91.0f;
   int reverb_height = size_ratio_ * 91.0f;
   int distortion_height = audio_height - delay_height - reverb_height - 2.0f * padding_;
 
   oscillator_section_->setBounds(column_1_x, padding_, section_one_width_, oscillators_height);
-  /*sub_section_->setBounds(column_1_x, oscillator_section_->getBottom() + padding_,
-                          sub_width, sub_mixer_height);*/
-  mixer_section_->setBounds(column_4_x, /*sub_section_->getY()*/ padding_,
-                            mixer_width, sub_mixer_height);
   amplitude_envelope_section_->setBounds(column_1_x, oscillator_section_->getBottom() + padding_,
                                          section_one_width_, envelopes_height);
-
+  sub_section_->setBounds(column_2_x - sub_width - padding_, amplitude_envelope_section_->getBottom() + padding_,
+                          sub_width, sub_mixer_height);
   /*feedback_section_->setBounds(column_2_x, padding_, section_two_width_, feedback_height);*/
-  filter_section_->setBounds(column_2_x, /*feedback_section_->getBottom() +*/ padding_,
-                             section_two_width_, filter_height);
-  filter_envelope_section_->setBounds(column_2_x, filter_section_->getBottom() + padding_,
-                                      section_two_width_, envelopes_height);
-
+  filter_section_->setBounds(column_3_x, /*feedback_section_->getBottom() +*/ padding_,
+                             section_three_width_, filter_height);
+  filter_envelope_section_->setBounds(column_3_x, filter_section_->getBottom() + padding_,
+                                      section_three_width_, envelopes_height);
   int lfo_width = 0.421875f * section_one_width_;
   int step_sequencer_width = section_one_width_ + section_two_width_ + padding_ -
                              3 * (lfo_width + padding_);
 
-  int step_lfo_y = amplitude_envelope_section_->getBottom() + padding_;
-  mono_lfo_1_section_->setBounds(column_1_x, step_lfo_y,
+  formant_section_->setBounds(column_2_x, /*stutter_section_->getBottom() +*/ padding_,
+  section_two_width_, formant_height);
+  int step_lfo_y = filter_envelope_section_->getBottom() + padding_;
+  mono_lfo_1_section_->setBounds(column_2_x, step_lfo_y,
                                  lfo_width, step_lfo_height);
   mono_lfo_2_section_->setBounds(mono_lfo_1_section_->getRight() + padding_, step_lfo_y,
                                  lfo_width, step_lfo_height);
   poly_lfo_section_->setBounds(mono_lfo_2_section_->getRight() + padding_, step_lfo_y,
                                lfo_width, step_lfo_height);
+  mixer_section_->setBounds(poly_lfo_section_->getRight() + padding_, filter_envelope_section_->getBottom() + padding_,
+                            mixer_width, sub_mixer_height);
   /*step_sequencer_section_->setBounds(poly_lfo_section_->getRight() + padding_, step_lfo_y,
                                      step_sequencer_width, step_lfo_height);*/
 
   /*stutter_section_->setBounds(column_3_x, padding_, section_three_left_width, stutter_height);*/
-  formant_section_->setBounds(column_3_x, /*stutter_section_->getBottom() +*/ padding_,
-                              section_three_left_width, formant_height);
-  extra_envelope_section_->setBounds(column_3_x, formant_section_->getBottom() + padding_,
-                                     section_three_width_, envelopes_height);
+  extra_envelope_section_->setBounds(column_2_x, formant_section_->getBottom() + padding_,
+                                     section_two_width_, envelopes_height);
   /*extra_mod_section_->setBounds(column_3_x, extra_envelope_section_->getBottom() + padding_,
                                 extra_envelope_section_->getWidth(), step_lfo_height);*/
 
@@ -206,8 +206,8 @@ void SynthesisInterface::resized() {
                        dynamics_height - 2 * keyboard_padding);*/
   //keyboard_->setKeyWidth(size_ratio_ * 16.0f);
 
-  colorblock_section_->setBounds(column_3_x, extra_envelope_section_->getBottom() + padding_,
-                                 section_three_width_, envelopes_height);
+  colorblock_left_section_->setBounds(0, padding_, padding_ , mono_lfo_1_section_->getBottom());
+  colorblock_right_section_->setBounds(filter_section_->getRight(), padding_, padding_ , mono_lfo_1_section_->getBottom());
 
   SynthSection::resized();
 }
