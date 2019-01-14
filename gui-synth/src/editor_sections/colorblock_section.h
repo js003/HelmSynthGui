@@ -11,6 +11,14 @@
 
 #include "synth_section.h"
 
+#include <netdb.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+#define BUFSIZE 2048
+#define PORT 8899
+
+
 class ColorBlockSection : public SynthSection , public Timer {
   public:
     ColorBlockSection(String name);

@@ -54,8 +54,8 @@ SynthesisInterface::SynthesisInterface(
   addSubSection(sub_section_ = new SubSection("SUB"));
   //addSubSection(voice_section_ = new VoiceSection("VOICE"));
 
-  addSubSection(colorblock_left_section_ = new ColorBlockSection(""));
-  addSubSection(colorblock_right_section_ = new ColorBlockSection(""));
+  addSubSection(colorblock_left_section_ = new ColorBlockSection(" "));
+  addSubSection(colorblock_right_section_ = new ColorBlockSection(" "));
 
   //keyboard_->setColour(MidiKeyboardComponent::whiteNoteColourId, Colour(0xff444444));
   //keyboard_->setColour(MidiKeyboardComponent::blackNoteColourId, Colour(0xff222222));
@@ -134,6 +134,8 @@ void SynthesisInterface::resized() {
   int section_three_right_width = section_three_width_ - padding_ - section_three_left_width;
   int column_4_x = column_3_x + padding_ + section_three_left_width;
 
+  int dynamic_width = size_ratio_ * DYNAMIC_WIDTH;
+
   int sub_width = 0.53125f * section_one_width_;
   int mixer_width = section_one_width_ - padding_ - sub_width;
 
@@ -155,21 +157,23 @@ void SynthesisInterface::resized() {
   oscillator_section_->setBounds(column_1_x, padding_, section_one_width_, oscillators_height);
   amplitude_envelope_section_->setBounds(column_1_x, oscillator_section_->getBottom() + padding_,
                                          section_one_width_, envelopes_height);
-  sub_section_->setBounds(column_2_x - sub_width - padding_, amplitude_envelope_section_->getBottom() + padding_,
+  int lfo_width = 0.421875f * section_one_width_;
+  int overall_width = section_one_width_ + section_two_width_ + section_three_width_ + 4.0f * padding_;
+  int sub_coord_left = overall_width - (sub_width + lfo_width * 3.0f + mixer_width + 6.0f * padding_);
+  sub_section_->setBounds(sub_coord_left / 2 + padding_, amplitude_envelope_section_->getBottom() + padding_,
                           sub_width, sub_mixer_height);
   /*feedback_section_->setBounds(column_2_x, padding_, section_two_width_, feedback_height);*/
   filter_section_->setBounds(column_3_x, /*feedback_section_->getBottom() +*/ padding_,
                              section_three_width_, filter_height);
   filter_envelope_section_->setBounds(column_3_x, filter_section_->getBottom() + padding_,
                                       section_three_width_, envelopes_height);
-  int lfo_width = 0.421875f * section_one_width_;
   int step_sequencer_width = section_one_width_ + section_two_width_ + padding_ -
                              3 * (lfo_width + padding_);
 
   formant_section_->setBounds(column_2_x, /*stutter_section_->getBottom() +*/ padding_,
   section_two_width_, formant_height);
   int step_lfo_y = filter_envelope_section_->getBottom() + padding_;
-  mono_lfo_1_section_->setBounds(column_2_x, step_lfo_y,
+  mono_lfo_1_section_->setBounds(sub_section_->getRight() + padding_, step_lfo_y,
                                  lfo_width, step_lfo_height);
   mono_lfo_2_section_->setBounds(mono_lfo_1_section_->getRight() + padding_, step_lfo_y,
                                  lfo_width, step_lfo_height);
@@ -193,7 +197,7 @@ void SynthesisInterface::resized() {
   /*reverb_section_->setBounds(column_4_x, delay_section_->getBottom() + padding_,
                              section_three_right_width, reverb_height);*/
 
-  int dynamic_width = size_ratio_ * DYNAMIC_WIDTH;
+
   int dynamics_y = getHeight() - padding_ - dynamics_height;
 
   /*voice_section_->setBounds(column_1_x, dynamics_y,
@@ -206,8 +210,10 @@ void SynthesisInterface::resized() {
                        dynamics_height - 2 * keyboard_padding);*/
   //keyboard_->setKeyWidth(size_ratio_ * 16.0f);
 
-  colorblock_left_section_->setBounds(0, padding_, padding_ , mono_lfo_1_section_->getBottom());
-  colorblock_right_section_->setBounds(filter_section_->getRight(), padding_, padding_ , mono_lfo_1_section_->getBottom());
+  colorblock_left_section_->setBounds(padding_, amplitude_envelope_section_->getBottom() + padding_,
+                                      sub_section_->getRight() - sub_width - column_1_x - padding_, step_lfo_height);
+  colorblock_right_section_->setBounds(mixer_section_->getRight() + padding_, amplitude_envelope_section_->getBottom() + padding_,
+                                      sub_section_->getRight() - sub_width - column_1_x - padding_, step_lfo_height);
 
   SynthSection::resized();
 }

@@ -119,9 +119,9 @@ void FullInterface::paintBackground(Graphics& g) {
   static const DropShadow shadow(Colour(0xcc000000), 3, Point<int>(0, 1));
   //static const DropShadow logo_shadow(Colour(0xff000000), 8, Point<int>(0, 0));
   static const DropShadow component_shadow(Colour(0xcc000000), 5, Point<int>(0, 1));
-  Image helm_small = ImageCache::getFromMemory(BinaryData::helm_icon_32_2x_png,
-                                               BinaryData::helm_icon_32_2x_pngSize);
-  g.setColour(Colors::background);
+  /*Image helm_small = ImageCache::getFromMemory(BinaryData::helm_icon_32_2x_png,
+                                               BinaryData::helm_icon_32_2x_pngSize); */
+  g.setColour(Colors::background); //b5
   g.fillRect(getLocalBounds());
 
   //shadow.drawForRectangle(g, arp_section_->getBounds());
@@ -193,7 +193,7 @@ void FullInterface::resized() {
   int patch_selector_width = section_one_width + section_two_width * 0.5f/*- logo_width*/ /*- padding*/;
 
   //logo_button_->setBounds(left + padding + logo_padding, padding, top_height, top_height);
-  patch_selector_->setBounds(/*logo_button_->getRight() +*/ padding /*+ logo_padding*/, padding,
+  patch_selector_->setBounds(/*logo_button_->getRight() +*/ left + padding /*+ logo_padding*/, padding,
                              patch_selector_width, top_height);
   global_tool_tip_->setBounds(patch_selector_->getX() + 0.11 * patch_selector_->getWidth(),
                               patch_selector_->getY(),
