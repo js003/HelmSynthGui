@@ -27,9 +27,7 @@ FullInterface::FullInterface(mopo::control_map controls, mopo::output_map modula
   open_gl_context.setOpenGLVersionRequired(OpenGLContext::openGL3_2);
 
   addSubSection(synthesis_interface_ = new SynthesisInterface(controls, keyboard_state));
-//  addSubSection(arp_section_ = new ArpSection(TRANS("ARP")));
   addSubSection(bpm_section_ = new BpmSection(TRANS("BPM")));
-
   addSubSection(patch_selector_ = new PatchSelector());
   addAndMakeVisible(global_tool_tip_ = new GlobalToolTip());
   addSubSection(volume_section_ = new VolumeSection("VOLUME"));
@@ -38,27 +36,7 @@ FullInterface::FullInterface(mopo::control_map controls, mopo::output_map modula
   setAllValues(controls);
   createModulationSliders(modulation_sources, mono_modulations, poly_modulations);
 
-  //logo_button_ = new ImageButton("logo_button");
   const Desktop::Displays::Display& display = Desktop::getInstance().getDisplays().getMainDisplay();
-/*  if (display.scale > 1.5) {
-    Image helm = ImageCache::getFromMemory(BinaryData::helm_icon_128_2x_png,
-                                           BinaryData::helm_icon_128_2x_pngSize);
-    logo_button_->setImages(true, true, false,
-                            helm, 1.0, Colours::transparentBlack,
-                            helm, 1.0, Colour(0x11ffffff),
-                            helm, 1.0, Colour(0x11000000));
-  }
-  else {
-    Image helm_small = ImageCache::getFromMemory(BinaryData::helm_icon_128_1x_png,
-                                                 BinaryData::helm_icon_128_1x_pngSize);
-    logo_button_->setImages(true, true, false,
-                            helm_small, 1.0, Colours::transparentBlack,
-                            helm_small, 1.0, Colour(0x11ffffff),
-                            helm_small, 1.0, Colour(0x11000000));
-  }
-  addAndMakeVisible(logo_button_);
-  logo_button_->addListener(this);
-*/
   addChildComponent(patch_browser_ = new PatchBrowser());
   patch_selector_->setBrowser(patch_browser_);
 
@@ -71,15 +49,6 @@ FullInterface::FullInterface(mopo::control_map controls, mopo::output_map modula
 
   about_section_ = new AboutSection("about");
   addChildComponent(about_section_);
-
-/*
-#if PAY_NAG
-  if (LoadSave::shouldAskForPayment()) {
-    contribute_section_ = new ContributeSection("contribute");
-    addAndMakeVisible(contribute_section_);
-  }
-#endif
-*/
 
   update_check_section_ = new UpdateCheckSection("update_check");
   addChildComponent(update_check_section_);
@@ -117,31 +86,19 @@ void FullInterface::paint(Graphics& g) { }
 
 void FullInterface::paintBackground(Graphics& g) {
   static const DropShadow shadow(Colour(0xcc000000), 3, Point<int>(0, 1));
-  //static const DropShadow logo_shadow(Colour(0xff000000), 8, Point<int>(0, 0));
   static const DropShadow component_shadow(Colour(0xcc000000), 5, Point<int>(0, 1));
-  /*Image helm_small = ImageCache::getFromMemory(BinaryData::helm_icon_32_2x_png,
-                                               BinaryData::helm_icon_32_2x_pngSize); */
-  g.setColour(Colors::background); //b5
+
+  g.setColour(Colors::background);
   g.fillRect(getLocalBounds());
 
-  //shadow.drawForRectangle(g, arp_section_->getBounds());
   shadow.drawForRectangle(g, oscilloscope_->getBounds());
   shadow.drawForRectangle(g, patch_selector_->getBounds());
 
-  //int logo_padding = 2 * size_ratio_;
-  //int x = logo_button_->getX() - logo_padding;
-  //int width = logo_button_->getWidth() + 2 * logo_padding;
-
-  //shadow.drawForRectangle(g, Rectangle<int>(x, logo_button_->getY(),
-  //                                          width, logo_button_->getHeight()));
   g.setColour(Colour(0xff303030));
-  //g.fillRoundedRectangle(x, logo_button_->getY(), width, logo_button_->getHeight(), 3.0f);
 
   g.saveState();
-  //g.setOrigin(logo_button_->getX(), logo_button_->getY());
   g.addTransform(AffineTransform::scale(size_ratio_, size_ratio_));
 
-  //logo_shadow.drawForImage(g, helm_small);
   g.restoreState();
 
   component_shadow.drawForRectangle(g, patch_selector_->getBounds());
@@ -187,13 +144,9 @@ void FullInterface::resized() {
   synthesis_interface_->setSectionTwoWidth(section_two_width);
   synthesis_interface_->setSectionThreeWidth(section_three_width);
 
-  //int logo_padding = 2 * ratio;
-  //int logo_width = top_height + 2 * logo_padding;
+  int patch_selector_width = section_one_width + section_two_width * 0.5f;
 
-  int patch_selector_width = section_one_width + section_two_width * 0.5f/*- logo_width*/ /*- padding*/;
-
-  //logo_button_->setBounds(left + padding + logo_padding, padding, top_height, top_height);
-  patch_selector_->setBounds(/*logo_button_->getRight() +*/ left + padding /*+ logo_padding*/, padding,
+  patch_selector_->setBounds(left + padding, padding,
                              patch_selector_width, top_height);
   global_tool_tip_->setBounds(patch_selector_->getX() + 0.11 * patch_selector_->getWidth(),
                               patch_selector_->getY(),
@@ -213,9 +166,6 @@ void FullInterface::resized() {
   bpm_section_->setBounds(oscilloscope_->getRight() + padding, padding,
                           bpm_width, top_height);
 
-  /*arp_section_->setBounds(bpm_section_->getRight() + padding, padding,
-                          arp_width, top_height);*/
-
   synthesis_interface_->setBounds(left, top_height + padding,
                                   width, height - top_height - padding);
 
@@ -227,8 +177,7 @@ void FullInterface::resized() {
   delete_section_->setBounds(getBounds());
 
   patch_browser_->setBounds(synthesis_interface_->getX() + padding, synthesis_interface_->getY(),
-                            width, //arp_section_->getRight() - synthesis_interface_->getX() - padding,
-                            synthesis_interface_->getHeight() - padding);
+                            width, synthesis_interface_->getHeight() - padding);
 
   SynthSection::resized();
   modulation_manager_->setBounds(getBounds());
@@ -265,10 +214,6 @@ void FullInterface::setToolTipText(String parameter, String value) {
 }
 
 void FullInterface::buttonClicked(Button* clicked_button) {
-  /*if (clicked_button == logo_button_) {
-    about_section_->setVisible(true);
-  }
-  else*/
     SynthSection::buttonClicked(clicked_button);
 }
 

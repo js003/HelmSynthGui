@@ -37,17 +37,6 @@ class OscillatorSection : public SynthSection {
     ScopedPointer<WaveViewer> wave_viewer_2_;
     ScopedPointer<SynthSlider> wave_selector_1_;
     ScopedPointer<SynthSlider> wave_selector_2_;
-    ScopedPointer<SynthSlider> transpose_1_;
-    ScopedPointer<SynthSlider> transpose_2_;
-    ScopedPointer<SynthSlider> tune_1_;
-    ScopedPointer<SynthSlider> tune_2_;
-    ScopedPointer<SynthSlider> unison_voices_1_;
-    ScopedPointer<SynthSlider> unison_voices_2_;
-    ScopedPointer<SynthSlider> unison_detune_1_;
-    ScopedPointer<SynthSlider> unison_detune_2_;
-    ScopedPointer<ToggleButton> unison_harmonize_1_;
-    ScopedPointer<ToggleButton> unison_harmonize_2_;
-    ScopedPointer<SynthSlider> cross_modulation_;
 
     Path top_left_cross_path_;
     Path top_right_cross_path_;

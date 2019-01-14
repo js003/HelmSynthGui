@@ -61,25 +61,16 @@ class SynthesisInterface  : public SynthSection {
   private:
     ScopedPointer<EnvelopeSection> amplitude_envelope_section_;
     ScopedPointer<DelaySection> delay_section_;
-    //ScopedPointer<DynamicSection> dynamic_section_;
     ScopedPointer<EnvelopeSection> extra_envelope_section_;
-    //ScopedPointer<ExtraModSection> extra_mod_section_;
-    //ScopedPointer<FeedbackSection> feedback_section_;
     ScopedPointer<EnvelopeSection> filter_envelope_section_;
     ScopedPointer<FilterSection> filter_section_;
     ScopedPointer<FormantSection> formant_section_;
     ScopedPointer<LfoSection> mono_lfo_1_section_;
     ScopedPointer<LfoSection> mono_lfo_2_section_;
-    //ScopedPointer<MidiKeyboardComponent> keyboard_;
     ScopedPointer<MixerSection> mixer_section_;
     ScopedPointer<OscillatorSection> oscillator_section_;
     ScopedPointer<LfoSection> poly_lfo_section_;
-    //ScopedPointer<ReverbSection> reverb_section_;
-    //ScopedPointer<DistortionSection> distortion_section_;
-    //ScopedPointer<StepSequencerSection> step_sequencer_section_;
-    //ScopedPointer<StutterSection> stutter_section_;
     ScopedPointer<SubSection> sub_section_;
-    //ScopedPointer<VoiceSection> voice_section_;
 
     ScopedPointer<ColorBlockSection> colorblock_left_section_;
     ScopedPointer<ColorBlockSection> colorblock_right_section_;
