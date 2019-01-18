@@ -64,23 +64,6 @@ FilterSection::FilterSection(String name) : SynthSection(name) {
   filter_response_->setFilterBlendSlider(blend_);
   filter_response_->setFilterShelfSlider(filter_shelf_);
 
-  /*
-  addSlider(drive_ = new SynthSlider("filter_drive"));
-  drive_->setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
-  */
-
-  /*addSlider(fil_env_depth_ = new SynthSlider("fil_env_depth"));
-  fil_env_depth_->setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
-  fil_env_depth_->setBipolar();
-  */
-
-  /*
-  addSlider(keytrack_ = new SynthSlider("keytrack"));
-  keytrack_->setSliderStyle(Slider::LinearBar);
-  keytrack_->snapToValue(true, 0.0);
-  keytrack_->setBipolar();
-  */
-
   TextSlider* style = new TextSlider("filter_style");
   addSlider(filter_style_ = style);
   filter_style_->setSliderStyle(Slider::LinearBar);
@@ -99,9 +82,6 @@ FilterSection::~FilterSection() {
   cutoff_ = nullptr;
   resonance_ = nullptr;
   filter_response_ = nullptr;
-  //fil_env_depth_ = nullptr;
-  //keytrack_ = nullptr;
-  //drive_ = nullptr;
 }
 
 void FilterSection::paintBackground(Graphics& g) {
@@ -111,10 +91,6 @@ void FilterSection::paintBackground(Graphics& g) {
 
   g.setColour(Colors::control_label_text);
   g.setFont(Fonts::instance()->proportional_regular().withPointHeight(size_ratio_ * 10.0f));
-
-  //drawTextForComponent(g, TRANS("ENV DEPTH"), fil_env_depth_);
-  //drawTextForComponent(g, TRANS("KEY TRACK"), keytrack_);
-  //drawTextForComponent(g, TRANS("DRIVE"), drive_);
 
   g.setColour(Colour(0xffaaaaaa));
   g.strokePath(low_pass_, stroke);
@@ -155,18 +131,6 @@ void FilterSection::resized() {
   int knob_vertical = knob_width + size_ratio_ * 14;
   int keytrack_vertical =  keytrack_top_padding + keytrack_height + size_ratio_ * 14;
   int space = (getHeight() - title_width - 2 * knob_vertical - keytrack_vertical) / 4;
-
-  /*drive_->setBounds(knob_center_x - knob_width / 2, title_width + space,
-                    knob_width, knob_width);
-
-  fil_env_depth_->setBounds(knob_center_x - knob_width / 2,
-                            title_width + knob_vertical + 2 * space,
-                            knob_width, knob_width);
-                            */
-  /*keytrack_->setBounds(knob_center_x - keytrack_width / 2,
-                       title_width + 2 * knob_vertical + 3 * space + keytrack_top_padding,
-                       keytrack_width, keytrack_height);
-                       */
   filter_style_->setBounds(filter_shelf_->getRight() + style_slider_padding, title_width,
                            style_slider_width, filter_type_width);
 
