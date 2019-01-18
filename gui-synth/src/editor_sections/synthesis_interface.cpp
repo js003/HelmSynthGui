@@ -116,7 +116,9 @@ void SynthesisInterface::resized() {
   int lfo_width = 0.421875f * section_one_width_;
   int overall_width = section_one_width_ + section_two_width_ + section_three_width_ + 4.0f * padding_;
   int sub_coord_left = overall_width - (sub_width + lfo_width * 3.0f + mixer_width + 6.0f * padding_);
-  sub_section_->setBounds(sub_coord_left / 2 + padding_, amplitude_envelope_section_->getBottom() + padding_,
+  sub_coord_left = sub_coord_left / 2 + padding_;
+  // for now, the colorblock is only allowed to have a single instance, so shift the sections to the right edge. --> sub_coord_left * 2 - padding_
+  sub_section_->setBounds(sub_coord_left * 2 - padding_, amplitude_envelope_section_->getBottom() + padding_,
                           sub_width, sub_mixer_height);
   filter_section_->setBounds(column_3_x, padding_,
                              section_three_width_, filter_height);
