@@ -90,14 +90,16 @@ void OscillatorSection::resized() {
   int knob_section_height = size_ratio_ * KNOB_SECTION_HEIGHT;
 
   float cross_mod_width = CROSS_MOD_WIDTH_PERCENT * getWidth();
-  float osc_width = (getWidth() - cross_mod_width) / 2.0f;
-  float osc_height = getHeight() - title_width - wave_selector_height - knob_section_height;
+  float osc_width = getWidth();
+  float osc_height = (getHeight() - title_width - wave_selector_height * 2.0f) / 2.0f;
   float osc_y = title_width + wave_selector_height;
 
-  wave_selector_1_->setBounds(0.0f, title_width, osc_width, wave_selector_height);
-  wave_selector_2_->setBounds(getWidth() - osc_width, title_width, osc_width, wave_selector_height);
-  wave_viewer_1_->setBounds(0.0f, osc_y, osc_width, osc_height);
-  wave_viewer_2_->setBounds(getWidth() - osc_width, osc_y, osc_width, osc_height);
+  wave_selector_1_->setBounds(0.0f, osc_y - wave_selector_height, osc_width, wave_selector_height);
+  wave_selector_2_->setBounds(0.0f, getHeight() - osc_height - wave_selector_height, osc_width, wave_selector_height);
+  //wave_viewer_1_->setBounds(0.0f, osc_y, osc_width, osc_height);
+  //wave_viewer_2_->setBounds(getWidth() - osc_width, osc_y, osc_width, osc_height);
+  wave_viewer_1_->setBounds(0.0f, osc_y, getWidth(), osc_height);
+  wave_viewer_2_->setBounds(0.0f, getHeight() - osc_height, getWidth(), osc_height);
 
   float space = (getWidth() - (2.0f * text_width + 2.0f * trans_width + 2.0f * tune_width)) / 5.0f;
   int knob_bottom = getHeight() - size_ratio_ * 22.0f;
